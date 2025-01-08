@@ -54,7 +54,7 @@ app.post('/register', async (req, res) => {
         const newUser = {
             id: users.length + 1,
             username,
-            password,
+            password: hashedPassword,
             cart:[]
         };
 
@@ -67,11 +67,11 @@ app.post('/register', async (req, res) => {
 
 // Авторизация
 app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
     try {
         // Проверка пользователя
-        const user = users.find(user => user.email === email);
+        const user = users.find(user => user.username === username);
         if (!user) return res.status(400).json({ message: 'User does not exist' });
 
         // Проверка пароля
@@ -79,7 +79,7 @@ app.post('/login', async (req, res) => {
         if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
         // Создание JWT токена
-        const token = jwt.sign({ id: user.id, username: user.username, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
 
         res.json({ token });
     } catch (err) {
