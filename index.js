@@ -44,7 +44,7 @@ app.post('/register', async (req, res) => {
 
     try {
         // Проверка, существует ли пользователь
-        const existingUser = users.find(user => user.email === email);
+        const existingUser = users.find(user => user.username === username);
         if (existingUser) return res.status(400).json({ message: 'User already exists' });
 
         // Хэширование пароля
