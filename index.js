@@ -120,7 +120,8 @@ app.get('/cart/:id', (req, res) => {
 app.delete('/cart', (req, res) => {
     const { productId, userId } = req.body;
     const userIndex = users.findIndex((u) => u.username === parseInt(userId));
-    users[userIndex] = user.cart.filter((item) => item.id !==  parseInt(productId));
+    let userCart = users[userIndex].cart
+    users[userIndex].cart = userCart.filter((item) => item.id !==  parseInt(productId));
     res.json({ message: 'Product removed from cart'});
 });
 
